@@ -5,73 +5,132 @@ Servo servoWrist;
 Servo servoLWh;
 Servo servoRWh;
 
-void penup(int secs){
+void restart(){
+  servoRWh.writeMicroseconds(1500); 
+  servoLWh.writeMicroseconds(1500);
+}
+
+void stopPen(int secs){
+  servoWrist.writeMicroseconds(1500);
+  delay(secs);
+}
+
+void penup(){
   servoWrist.writeMicroseconds(1300);
-  delay(secs);
+  delay(400);
 }
 
-void pendown(int secs){
+void pendown(){
   servoWrist.writeMicroseconds(1700);
-  delay(secs);
+  delay(400);
 }
 
- void turnRight(int secs){
-  servoRWh.writeMicroseconds(2000); //right
-  servoLWh.writeMicroseconds(1700);
-  delay(secs);
+ void turnRight(){
+  servoRWh.writeMicroseconds(1700); //right
+  servoLWh.writeMicroseconds(1600);
+  delay(800);
+  restart();
    
 }
 
-void turnLeft(int secs){ 
+void turnLeft(){ 
   servoLWh.writeMicroseconds(1300); //left
   servoRWh.writeMicroseconds(1200); //right
-  delay(secs);
+  delay(800);
+  restart();
+  
 }
 
 void forward(int secs){
   servoRWh.writeMicroseconds(1300); 
   servoLWh.writeMicroseconds(1700); 
   delay(secs);
+  restart();
 }
 
 void backward(int secs){
   servoRWh.writeMicroseconds(1700); 
   servoLWh.writeMicroseconds(1300); 
   delay(secs);
+  restart();
 }
 
 void drawSquare(){
   for (int i = 0; i < 4; i ++){
+    //penup();
+    //stopPen(800);
+    turnRight();
+    pendown();
+    stopPen(1500);
     forward(1500);
-    turnRight(1000);
+    //delay(500);
+    restart();
+    
+    
   }
 }
-void circle(){
-  for (int i = 0; i < 36; i++){
-     // forward(250);
-      turnRight(500);
+void circle(int secs){
+  for (int i = 0; i < 10; i++){
+    pendown();
+    stopPen(8000);
+    turnRight();
+      
    }
 }
-void fan(){
-  for (int i = 0; i < 36; i++){
+void fan(int secs){
+  for (int i = 0; i < 15; i++){
+      pendown();
+      stopPen(1050);
       forward(250);
-      turnRight(500);
+      turnRight();
+      restart();
+      //penup();
    }
 }
+
+//int shapes[] = {0,1,2};
+long randNumber;
+
 void setup() {
  // servoElbow.attach(13);
   servoWrist.attach(12);
   servoLWh.attach(11);
   servoRWh.attach(10);
-
+  Serial.begin(9600);
+  randomSeed(analogRead(0));
+  servoLWh.writeMicroseconds(1500); //left
+  servoRWh.writeMicroseconds(1500);
+  delay(2000);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  //pendown(100);
-  //drawSquare();
-  circle();
+  /*pendown();
+  stopPen(10000);
+  penup();
+  stopPen(5000);*/
 
+  //penup();
   
+/* randNumber = random(3);
+
+  if (randNumber == 0){
+    circle(500);
+    penup();
+    stopPen(500);
+    delay(500);
+    
+  }
+  else if (randNumber == 1){
+    drawSquare();
+    delay(500);
+    
+  }
+  else if (randNumber == 2){
+    fan(1000);
+    penup();
+    stopPen(500);
+    delay(500);
+  }
+  Serial.println(randNumber); */
 }
 
