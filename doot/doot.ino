@@ -5,10 +5,10 @@ Servo servoWrist;
 Servo servoLWh;
 Servo servoRWh;
 
-void restart() {
+void pause() {
   servoRWh.writeMicroseconds(1500);
   servoLWh.writeMicroseconds(1500);
-  //delay(200);
+  delay(1000);
 }
 
 void stopPen(int secs) {
@@ -19,19 +19,19 @@ void stopPen(int secs) {
 
 void penup() {
   servoWrist.writeMicroseconds(1300);
-  delay(400);
+  delay(600);
 }
 
 void pendown() {
   servoWrist.writeMicroseconds(1700);
-  delay(400);
+  delay(600);
 }
 
 void turnRight() {
   servoRWh.writeMicroseconds(2000); //right
   servoLWh.writeMicroseconds(1700);
-  delay(780);
-  restart();
+  delay(800);
+  pause();
   delay(1000);
 }
 
@@ -39,14 +39,14 @@ void turnLeft() {
   servoLWh.writeMicroseconds(1300); //left
   servoRWh.writeMicroseconds(1200); //right
   delay(800);
-  restart();
+  pause();
 }
 
 void turnRight_2() {
   servoRWh.writeMicroseconds(2000); //right
   servoLWh.writeMicroseconds(1700);
   delay(900);
-  restart();
+  pause();
   delay(1000);
 }
 
@@ -67,30 +67,28 @@ void drawSquare() {
     penup();
     stopPen(1780);
     turnRight();
-    restart();
+    pause();
     pendown();
     stopPen(1500);
     forward(1500);
-    restart();
+    pause();
   }
 }
-void circle(int secs) {
-  for (int i = 0; i < 5; i++) {
-    //pendown();
-    //stopPen(4000);
+void circle() {
+  for (int i = 0; i < 6; i++) {
     turnRight();
   }
 }
 void harry(int secs) {
   for (int i = 0; i < 5; i++) {
-    circle(1000);
+    circle();
     forward(1000);
   }
 }
 
 void loopdeloop(int secs) {
   for (int i = 0; i < 2; i++) {
-    circle(1000);
+    circle();
     forward(1000);
   }
 }
@@ -98,9 +96,9 @@ void loopdeloop(int secs) {
 void triangle(){
   for (int i = 0; i < 3; i++) {
     turnRight_2();
-    restart();
+    pause();
     forward(500);
-    restart();
+    pause();
   }
 }
 
@@ -111,7 +109,10 @@ void fan(int secs) {
     stopPen(1050);
     forward(250);
     turnRight();
-    restart();
+    penup();
+    stopPen(500);
+    delay(500);
+    pause();
   }
 }
 
@@ -119,23 +120,52 @@ long randNumber;
 
 void setup() {
   // servoElbow.attach(13);
-  servoWrist.attach(12);
-  servoLWh.attach(11);
-  servoRWh.attach(10);
+  servoWrist.attach(11);
+  servoLWh.attach(13);
+  servoRWh.attach(12);
 
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  //servoRWh.writeMicroseconds(1500);
+  drawSquare();
+
+  /*servoLWh.writeMicroseconds(1500);
+  delay(1000);
+  servoLWh.writeMicroseconds(1300);
+  delay(100);
+  servoLWh.writeMicroseconds(1700);
+  delay(1000);*/
+
+ //pause();
+ //delay(1000);
+ //forward(1000);
+  //drawSquare();
+  
+  /*pendown();      //draws a circle. set marker to left position
+  stopPen(10680);
+  circle();
+  penup();
+  forward(100);
+  pause();
+  delay(1000);*/
+ 
+ 
+  
+  
+
+  
+
+
 
   //loopdeloop(2000);
   
   //harry(1000);
-    pendown();
+  /*  pendown();
     stopPen(500);
-    triangle();
+    //triangle();
     penup();
-    stopPen(1000);
+    stopPen(1000);*/
   //drawSquare();
 
     /*pendown();
