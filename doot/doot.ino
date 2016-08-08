@@ -1,4 +1,12 @@
+#include <SoftwareSerial.h>
 #include <Servo.h>
+
+Servo servoTest;
+
+int bluetoothTx = 2;  // TX-O pin of bluetooth mate, Arduino D2
+int bluetoothRx = 3;  // RX-I pin of bluetooth mate, Arduino D3
+
+SoftwareSerial bluetooth(bluetoothTx, bluetoothRx);
 
 //Servo servoElbow;
 Servo servoWrist;
@@ -46,7 +54,7 @@ void turnRight_2() {
   servoLWh.writeMicroseconds(1700);
   delay(3000);
   pause();
-  
+
 }
 void forward(int secs) {
   servoRWh.writeMicroseconds(1300);
@@ -76,7 +84,7 @@ void circle() {
   for (int i = 0; i < 4; i++) {
     turnLeft();
   }
-  
+
 }
 void harry() {
   for (int i = 0; i < 5; i++) {
@@ -125,6 +133,15 @@ void fan(int secs) {
 long randNumber;
 
 void setup() {
+
+  Serial.begin(9600);  // Begin the serial monitor at 9600bps
+
+  bluetooth.begin(115200);  // The Bluetooth Mate defaults to 115200bps
+  delay(100);  // Short delay, wait for the Mate to send back CMD
+  bluetooth.println("U,9600,N");  // Temporarily Change the baudrate to 9600, no parity
+  // 115200 can be too fast at times for NewSoftSerial to relay the data reliably
+  bluetooth.begin(9600);  // Start bluetooth serial at 9600
+
   // servoElbow.attach(13);
   servoWrist.attach(11);
   servoLWh.attach(13);
@@ -135,7 +152,21 @@ void setup() {
 
 void loop() {
 
-    /*pendown();
+  if (bluetooth.available()) // If the bluetooth sent any characters
+  {
+    servoTest.writeMicroseconds(1700);
+    // Send any characters the bluetooth prints to the serial monitor
+    Serial.print((char)bluetooth.read());
+  }
+  if (Serial.available()) // If stuff was typed in the serial monitor
+  {
+
+    // Send any characters the Serial monitor prints to the bluetooth
+    bluetooth.print((char)Serial.read());
+  }
+  // and loop forever and ever!
+
+  /*pendown();
     stopPen(5600);
     circle();
     penup();
@@ -155,15 +186,15 @@ void loop() {
     penup();
     stopPen(500);
     delay(500);
- 
+
     pendown();
     stopPen(6600);
     harry();
     penup();
     stopPen(500);
     delay(500);*/
-  
-  
+
+
   /*balloon();
     penup();
     stopPen(1000);*/
@@ -177,46 +208,46 @@ void loop() {
 
   /*pendown();      //draws a circle. set marker to left position
     stopPen(10680); */
-    circle();
-    digitalWrite(LEDPIN, HIGH);
-    delay(500);
-   /* penup();
+  circle();
+  digitalWrite(LEDPIN, HIGH);
+  delay(500);
+  /* penup();
     forward(100);
     pause();
     delay(1000);*/
-    
- /* randNumber = random(4);
-  Serial.print(randNumber);
 
-  if (randNumber == 0) {
-    pendown();
-    stopPen(5600);
-    circle();
-    penup();
-    stopPen(500);
-    delay(500);
-  }
-  else if (randNumber == 1) {
-    pendown();
-    stopPen(6600);
-    balloon();
-    penup();
-    stopPen(500);
-    delay(500);
-  }
-  else if (randNumber == 2) {
-    fan(1000);
-    penup();
-    stopPen(500);
-    delay(500);
-  }
-  else if (randNumber == 3) {
-    pendown();
-    stopPen(6600);
-    harry();
-    stopPen(500);
-    delay(500);
-  }*/
+  /* randNumber = random(4);
+    Serial.print(randNumber);
+
+    if (randNumber == 0) {
+     pendown();
+     stopPen(5600);
+     circle();
+     penup();
+     stopPen(500);
+     delay(500);
+    }
+    else if (randNumber == 1) {
+     pendown();
+     stopPen(6600);
+     balloon();
+     penup();
+     stopPen(500);
+     delay(500);
+    }
+    else if (randNumber == 2) {
+     fan(1000);
+     penup();
+     stopPen(500);
+     delay(500);
+    }
+    else if (randNumber == 3) {
+     pendown();
+     stopPen(6600);
+     harry();
+     stopPen(500);
+     delay(500);
+    }*/
 
 }
 
