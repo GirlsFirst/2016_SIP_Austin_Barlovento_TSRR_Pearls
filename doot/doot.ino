@@ -57,8 +57,6 @@ void backward(int secs){
 
 void drawSquare(){
   for (int i = 0; i < 4; i ++){
-    //penup();
-    //stopPen(800);
     turnRight();
     pendown();
     stopPen(1500);
