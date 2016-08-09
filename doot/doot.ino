@@ -1,11 +1,13 @@
 #include <SoftwareSerial.h>     //Bluetooth library
 #include <Servo.h>              //Servo library
-        
+
 
 int bluetoothTx = 2;  // TX-O pin of bluetooth mate, Arduino D2
 int bluetoothRx = 3;  // RX-I pin of bluetooth mate, Arduino D3
 
 SoftwareSerial bluetooth(bluetoothTx, bluetoothRx);
+
+Servo servoTest;
 
 //Servo servoElbow;
 Servo servoWrist;
@@ -26,7 +28,7 @@ void stopPen(int secs) {   //Pen stays in position for x amount of time
 }
 
 
-void penup() {      //Pen up      
+void penup() {      //Pen up
   servoWrist.writeMicroseconds(1300);
   delay(600);
 }
@@ -142,7 +144,7 @@ void setup() {
   // 115200 can be too fast at times for NewSoftSerial to relay the data reliably
   bluetooth.begin(9600);    // Start bluetooth serial at 9600
 
-
+  servoTest.attach(13);
   servoWrist.attach(11);
   servoLWh.attach(13);
   servoRWh.attach(12);
@@ -151,21 +153,30 @@ void setup() {
 
 
 void loop() {
+  /*servoRWh.writeMicroseconds(1500);
+  servoLWh.writeMicroseconds(1500);*/
 
   if (bluetooth.available())      // If the bluetooth sent any characters
-  {
-    servoTest.writeMicroseconds(1700);
-    
-    // Send any characters the bluetooth prints to the serial monitor
-    Serial.print((char)bluetooth.read());
-  }
-  if (Serial.available())       // If stuff was typed in the serial monitor
-  {
+    {
+     //pendown();
+     //stopPen(5600);
+     circle();
+    // penup();
+     //stopPen(500);
+     delay(500);
 
-    // Send any characters the Serial monitor prints to the bluetooth
-    bluetooth.print((char)Serial.read());
-  }
-  // and loop forever and ever!
+     //servoTest.writeMicroseconds(1700);
+
+     // Send any characters the bluetooth prints to the serial monitor
+     Serial.print((char)bluetooth.read());
+    }
+    if (Serial.available())       // If stuff was typed in the serial monitor
+    {
+
+     // Send any characters the Serial monitor prints to the bluetooth
+     bluetooth.print((char)Serial.read());
+    }
+    // and loop forever and ever!
 
   /*pendown();
     stopPen(5600);
@@ -209,9 +220,9 @@ void loop() {
 
   /*pendown();      //draws a circle. set marker to left position
     stopPen(10680); */
-  circle();
-  digitalWrite(LEDPIN, HIGH);
-  delay(500);
+  //circle();
+  //digitalWrite(LEDPIN, HIGH);
+  //delay(500);
   /* penup();
     forward(100);
     pause();
